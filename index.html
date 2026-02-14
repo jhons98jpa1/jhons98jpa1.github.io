@@ -18,13 +18,13 @@ canvas{
 }
 #title{
   position:absolute;
-  top:40px;
+  top:30px;
   width:100%;
   text-align:center;
-  color:#ffb6ff;
+  color:#ff9ff3;
   font-size:22px;
-  letter-spacing:2px;
-  text-shadow:0 0 10px pink;
+  text-shadow:0 0 10px pink, 0 0 20px hotpink;
+  z-index:10;
 }
 </style>
 </head>
@@ -34,88 +34,91 @@ canvas{
 <canvas id="c"></canvas>
 
 <audio id="music" loop>
-<source src="https://cdn.pixabay.com/audio/2022/03/09/audio_1e6d6a2f98.mp3">
+  <source src="https://cdn.pixabay.com/audio/2022/03/15/audio_6e6d7f3c3f.mp3">
 </audio>
 
 <script>
-const canvas = document.getElementById("c");
-const ctx = canvas.getContext("2d");
-canvas.width = innerWidth;
-canvas.height = innerHeight;
-
-window.onresize = ()=>{
-  canvas.width = innerWidth;
-  canvas.height = innerHeight;
-};
-
-let stars=[];
-let particles=[];
+const c = document.getElementById("c");
+const ctx = c.getContext("2d");
+function resize(){
+  c.width = innerWidth;
+  c.height = innerHeight;
+}
+resize();
+window.onresize = resize;
 
 // ⭐ estrellas
-for(let i=0;i<400;i++){
+let stars=[];
+for(let i=0;i<300;i++){
   stars.push({
-    x:Math.random()*canvas.width,
-    y:Math.random()*canvas.height,
-    s:Math.random()*1.5+0.3
+    x:Math.random()*c.width,
+    y:Math.random()*c.height,
+    s:Math.random()*1.2+0.3
   });
 }
 
-// 💗 función corazón
-function heart(t){
+// 💗 partículas corazón
+let hearts=[];
+
+function heartShape(t){
   return {
     x:16*Math.pow(Math.sin(t),3),
     y:-(13*Math.cos(t)-5*Math.cos(2*t)-2*Math.cos(3*t)-Math.cos(4*t))
   };
 }
 
-// 💞 crear corazones grandes
-function createHeart(cx,cy,scale){
-  for(let t=0;t<Math.PI*2;t+=0.08){
-    let p=heart(t);
-    particles.push({
+function spawnHeart(cx,cy,scale){
+  for(let t=0;t<Math.PI*2;t+=0.05){
+    let p=heartShape(t);
+    hearts.push({
       x:cx+p.x*scale,
       y:cy+p.y*scale,
-      vx:(Math.random()-0.5)*0.3,
-      vy:(Math.random()-0.5)*0.3,
+      vx:(Math.random()-0.5)*0.4,
+      vy:(Math.random()-0.5)*0.4,
       a:1
     });
   }
 }
 
-// 💗 fila de corazones
-let yBase = canvas.height/2;
-for(let i=-2;i<=2;i++){
-  createHeart(canvas.width/2 + i*180, yBase-120, 10);
+// 💞 crear varios corazones (IGUAL AL EJEMPLO)
+function createAll(){
+  hearts=[];
+  let midX=c.width/2;
+  let midY=c.height/2;
+  for(let i=-2;i<=2;i++){
+    spawnHeart(midX+i*160, midY-120, 8);
+  }
+  spawnHeart(midX, midY+140, 12);
 }
-createHeart(canvas.width/2, yBase+120, 16);
+createAll();
 
 // ✨ animación
 function animate(){
-  ctx.clearRect(0,0,canvas.width,canvas.height);
+  ctx.clearRect(0,0,c.width,c.height);
 
   // estrellas
   ctx.fillStyle="white";
   stars.forEach(s=>{
     ctx.fillRect(s.x,s.y,1,1);
     s.y+=s.s*0.15;
-    if(s.y>canvas.height) s.y=0;
+    if(s.y>c.height) s.y=0;
   });
 
-  // partículas corazón
+  // corazones
   ctx.fillStyle="hotpink";
-  particles.forEach(p=>{
-    ctx.globalAlpha=p.a;
-    ctx.fillRect(p.x,p.y,2,2);
-    p.x+=p.vx;
-    p.y+=p.vy;
+  hearts.forEach(h=>{
+    ctx.globalAlpha=h.a;
+    ctx.fillRect(h.x,h.y,2,2);
+    h.x+=h.vx;
+    h.y+=h.vy;
   });
-
   ctx.globalAlpha=1;
+
   requestAnimationFrame(animate);
 }
 animate();
 
-// 🎵 música al tocar
+// 🎵 música
 document.body.addEventListener("click",()=>{
   document.getElementById("music").play();
 });
