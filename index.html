@@ -46,27 +46,35 @@ canvas{
   opacity:0.95;
   pointer-events:none;
 }
-</style>
+</style> #musicBtn{
+  position:absolute;
+  bottom:25px;
+  width:100%;
+  text-align:center;
+  font-family:'Dancing Script', cursive;
+  color:#ccc;
+  font-size:16px;
+  z-index:10;
+  cursor:pointer;
+}
 </head>
 
 <body>
 
 <div id="mainText">De Jhonatan para Alison Michell</div>
+  <div id="musicBtn">▶️ Reproducir música</div>
 <canvas id="c"></canvas>
 
 <audio id="music" loop>
   <source src="https://cdn.pixabay.com/audio/2022/03/15/audio_6e6d7f3c3f.mp3">
 </audio>
 
-<script>
-const c=document.getElementById("c");
-const ctx=c.getContext("2d");
-function resize(){
-  c.width=innerWidth;
-  c.height=innerHeight;
-}
-resize();
-onresize=resize;
+<script> document.getElementById("musicBtn").addEventListener("click",()=>{
+  const m = document.getElementById("music");
+  m.play();
+  document.getElementById("musicBtn").innerText = "🎵 Música reproduciéndose";
+});
+
 
 /* GALAXIA */
 let stars=[];
