@@ -1,126 +1,63 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="UTF-8">
-<title>Jhonatan ❤️ Alisson Michell</title>
-<style>
-html,body{
-  margin:0;
-  padding:0;
-  background:black;
-  overflow:hidden;
-  font-family: 'Arial', sans-serif;
-}
-canvas{
-  position:fixed;
-  top:0;
-  left:0;
-}
-#names{
-  position:absolute;
-  top:50%;
-  width:100%;
-  transform:translateY(-50%);
-  text-align:center;
-  color:#ff77ff;
-  font-size:38px;
-  font-weight:bold;
-  text-shadow:0 0 10px pink, 0 0 25px hotpink;
-  animation: beat 1.6s infinite;
-  z-index:10;
-}
-@keyframes beat{
-  0%,100%{transform:translateY(-50%) scale(1);}
-  50%{transform:translateY(-50%) scale(1.08);}
-}
-</style>
+  <meta charset="UTF-8">
+  <title>Te Amo Muchote</title>
+  <style>
+    body {
+      background-color: black;
+      color: pink;
+      font-family: 'Comic Sans MS', cursive, sans-serif;
+      text-align: center;
+    }
+    h1 {
+      font-size: 3em;
+      margin-top: 50px;
+      text-shadow: 0 0 10px pink;
+    }
+    .nombre {
+      font-size: 2em;
+      color: white;
+      text-shadow: 0 0 20px white;
+      margin-top: 30px;
+    }
+    .corazones {
+      font-size: 1.2em;
+      margin-top: 20px;
+      line-height: 1.8em;
+    }
+  </style>
 </head>
 <body>
-
-<div id="names">Jhonatan ❤️ Alisson Michell</div>
-<canvas id="c"></canvas>
-
-<audio id="music" loop>
-  <source src="https://cdn.pixabay.com/audio/2022/02/23/audio_4c8c8c3b2e.mp3">
-</audio>
-
-<script>
-const c=document.getElementById("c");
-const ctx=c.getContext("2d");
-function resize(){
-  c.width=innerWidth;
-  c.height=innerHeight;
-}
-resize();
-onresize=resize;
-
-// ⭐ galaxia
-let stars=[];
-for(let i=0;i<300;i++){
-  stars.push({
-    x:Math.random()*c.width,
-    y:Math.random()*c.height,
-    s:Math.random()*1.2+0.2
-  });
-}
-
-// 💗 partículas del corazón
-let parts=[];
-function heart(t){
-  return {
-    x:16*Math.pow(Math.sin(t),3),
-    y:-(13*Math.cos(t)-5*Math.cos(2*t)-2*Math.cos(3*t)-Math.cos(4*t))
-  };
-}
-function makeHeart(){
-  parts=[];
-  let cx=c.width/2;
-  let cy=c.height/2;
-  let scale=14;
-  for(let t=0;t<Math.PI*2;t+=0.04){
-    let p=heart(t);
-    parts.push({
-      x:cx+p.x*scale,
-      y:cy+p.y*scale,
-      vx:(Math.random()-0.5)*0.4,
-      vy:(Math.random()-0.5)*0.4,
-      a:1
-    });
-  }
-}
-makeHeart();
-
-// ✨ animación
-function animate(){
-  ctx.clearRect(0,0,c.width,c.height);
-
-  // estrellas
-  ctx.fillStyle="white";
-  stars.forEach(s=>{
-    ctx.fillRect(s.x,s.y,1,1);
-    s.y+=s.s*0.15;
-    if(s.y>c.height) s.y=0;
-  });
-
-  // corazón
-  ctx.fillStyle="hotpink";
-  parts.forEach(p=>{
-    ctx.globalAlpha=p.a;
-    ctx.fillRect(p.x,p.y,2,2);
-    p.x+=p.vx;
-    p.y+=p.vy;
-  });
-  ctx.globalAlpha=1;
-
-  requestAnimationFrame(animate);
-}
-animate();
-
-// 🎵 música
-document.body.addEventListener("click",()=>{
-  document.getElementById("music").play();
-});
-</script>
-
+  <h1>Te Amo Muchote</h1>
+  <div class="nombre">Jhonatan ❤️ Alisson Michell</div>
+  <div class="corazones">
+    Mi tesoro 💎<br>
+    Mi princesa 👑<br>
+    Mi cielo 🌌<br>
+    Mi alegría 😊<br>
+    Mi felicidad 😍<br>
+    Mi sol ☀️<br>
+    Mi paz 🕊️<br>
+    Mi estrella ⭐<br>
+    Mi amor 💖<br>
+    Te amo 💘<br>
+    Para siempre ♾️<br>
+    Eres todo 🌍<br>
+    Mi vida 💓<br>
+    Mi universo 🌌<br>
+    Mi corazón ❤️<br>
+    Mi primer amor 🥇<br>
+    Mi reina 👑<br>
+    Mi todo 💞<br>
+    Mi ángel 😇<br>
+    Mi luz ✨<br>
+    Mi razón de vivir 💫<br>
+    Mi mundo 🌎<br>
+    Mi amorcito 💕<br>
+    Mi hermosa 🌷<br>
+    Mi dulzura 🍯<br>
+    ... y mucho más 💌
+  </div>
 </body>
 </html>
