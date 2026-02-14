@@ -1,63 +1,165 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <title>Te Amo Muchote</title>
-  <style>
-    body {
-      background-color: black;
-      color: pink;
-      font-family: 'Comic Sans MS', cursive, sans-serif;
-      text-align: center;
-    }
-    h1 {
-      font-size: 3em;
-      margin-top: 50px;
-      text-shadow: 0 0 10px pink;
-    }
-    .nombre {
-      font-size: 2em;
-      color: white;
-      text-shadow: 0 0 20px white;
-      margin-top: 30px;
-    }
-    .corazones {
-      font-size: 1.2em;
-      margin-top: 20px;
-      line-height: 1.8em;
-    }
-  </style>
+<meta charset="UTF-8">
+<title>Jhonatan ❤️ Alisson Michell</title>
+<style>
+html,body{
+  margin:0;
+  padding:0;
+  background:black;
+  overflow:hidden;
+  font-family: Arial, sans-serif;
+}
+canvas{
+  position:fixed;
+  top:0;
+  left:0;
+}
+#topText{
+  position:absolute;
+  top:20px;
+  width:100%;
+  text-align:center;
+  color:#ff9ff3;
+  font-size:20px;
+  text-shadow:0 0 10px pink;
+  z-index:10;
+}
+.floating{
+  position:absolute;
+  color:#ff77ff;
+  font-size:14px;
+  opacity:0.9;
+  pointer-events:none;
+}
+</style>
 </head>
 <body>
-  <h1>Te Amo Muchote</h1>
-  <div class="nombre">Jhonatan ❤️ Alisson Michell</div>
-  <div class="corazones">
-    Mi tesoro 💎<br>
-    Mi princesa 👑<br>
-    Mi cielo 🌌<br>
-    Mi alegría 😊<br>
-    Mi felicidad 😍<br>
-    Mi sol ☀️<br>
-    Mi paz 🕊️<br>
-    Mi estrella ⭐<br>
-    Mi amor 💖<br>
-    Te amo 💘<br>
-    Para siempre ♾️<br>
-    Eres todo 🌍<br>
-    Mi vida 💓<br>
-    Mi universo 🌌<br>
-    Mi corazón ❤️<br>
-    Mi primer amor 🥇<br>
-    Mi reina 👑<br>
-    Mi todo 💞<br>
-    Mi ángel 😇<br>
-    Mi luz ✨<br>
-    Mi razón de vivir 💫<br>
-    Mi mundo 🌎<br>
-    Mi amorcito 💕<br>
-    Mi hermosa 🌷<br>
-    Mi dulzura 🍯<br>
-    ... y mucho más 💌
-  </div>
+
+<div id="topText">Te Amo Muchote 💖</div>
+<canvas id="c"></canvas>
+
+<audio id="music" loop>
+  <source src="https://cdn.pixabay.com/audio/2022/03/15/audio_6e6d7f3c3f.mp3">
+</audio>
+
+<script>
+const c = document.getElementById("c");
+const ctx = c.getContext("2d");
+function resize(){
+  c.width = innerWidth;
+  c.height = innerHeight;
+}
+resize();
+onresize = resize;
+
+// ⭐ galaxia
+let stars=[];
+for(let i=0;i<500;i++){
+  stars.push({
+    x:Math.random()*c.width,
+    y:Math.random()*c.height,
+    s:Math.random()*1.5+0.3
+  });
+}
+
+// 💗 función corazón
+function heart(t){
+  return {
+    x:16*Math.pow(Math.sin(t),3),
+    y:-(13*Math.cos(t)-5*Math.cos(2*t)-2*Math.cos(3*t)-Math.cos(4*t))
+  };
+}
+
+// 💞 partículas corazones
+let particles=[];
+function spawnHeart(cx,cy,scale){
+  for(let t=0;t<Math.PI*2;t+=0.05){
+    let p=heart(t);
+    particles.push({
+      x:cx+p.x*scale,
+      y:cy+p.y*scale,
+      vx:(Math.random()-0.5)*0.3,
+      vy:(Math.random()-0.5)*0.3
+    });
+  }
+}
+
+// 💗 crear todos los corazones
+function createHearts(){
+  particles=[];
+  let mx=c.width/2;
+  let my=c.height/2;
+  for(let i=-2;i<=2;i++){
+    spawnHeart(mx+i*170,my-140,8);
+  }
+  spawnHeart(mx,my+140,13);
+}
+createHearts();
+
+// 💬 textos flotantes (NOMBRES Y FRASES)
+const phrases=[
+  "Jhonatan ❤️ Alisson Michell",
+  "Mi vida 💕",
+  "Para siempre 💖",
+  "Te amo 💗",
+  "💞","💖","💗","👑"
+];
+
+function floatingText(){
+  let d=document.createElement("div");
+  d.className="floating";
+  d.innerText=phrases[Math.floor(Math.random()*phrases.length)];
+  d.style.left=Math.random()*innerWidth+"px";
+  d.style.top=innerHeight+"px";
+  document.body.appendChild(d);
+
+  let y=innerHeight;
+  let speed=Math.random()*0.5+0.3;
+
+  function move(){
+    y-=speed;
+    d.style.top=y+"px";
+    if(y<-50){
+      d.remove();
+    }else{
+      requestAnimationFrame(move);
+    }
+  }
+  move();
+}
+setInterval(floatingText,500);
+
+// ✨ animación
+function animate(){
+  ctx.clearRect(0,0,c.width,c.height);
+
+  // estrellas
+  ctx.fillStyle="white";
+  stars.forEach(s=>{
+    ctx.fillRect(s.x,s.y,1,1);
+    s.y+=s.s*0.15;
+    if(s.y>c.height) s.y=0;
+  });
+
+  // corazones
+  ctx.fillStyle="hotpink";
+  particles.forEach(p=>{
+    ctx.fillRect(p.x,p.y,2,2);
+    p.x+=p.vx;
+    p.y+=p.vy;
+  });
+
+  requestAnimationFrame(animate);
+}
+animate();
+
+// 🎵 música
+document.body.addEventListener("click",()=>{
+  document.getElementById("music").play();
+});
+</script>
+
 </body>
 </html>
