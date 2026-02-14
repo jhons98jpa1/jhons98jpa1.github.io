@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<title>Jhonatan y Alison</title>
+<title>De Jhonatan para Alison Michell</title>
 <style>
 html,body{
   margin:0;
@@ -16,21 +16,21 @@ canvas{
   top:0;
   left:0;
 }
-#names{
+#mainText{
   position:absolute;
-  top:45%;
+  top:42%;
   width:100%;
   transform:translateY(-50%);
   text-align:center;
-  color:#ff8bd4;
-  font-size:36px;
+  color:#ff9ad5;
+  font-size:34px;
   font-weight:bold;
   text-shadow:0 0 10px pink, 0 0 25px hotpink;
   z-index:10;
 }
 .floating{
   position:absolute;
-  color:#ffd6f0;
+  color:#ffd9ef;
   font-size:14px;
   opacity:0.9;
   pointer-events:none;
@@ -39,7 +39,7 @@ canvas{
 </head>
 <body>
 
-<div id="names">Jhonatan y Alison</div>
+<div id="mainText">De Jhonatan para Alison Michell</div>
 <canvas id="c"></canvas>
 
 <audio id="music" loop>
@@ -56,9 +56,9 @@ function resize(){
 resize();
 onresize = resize;
 
-// ⭐ galaxia
+// ⭐ Galaxia
 let stars=[];
-for(let i=0;i<400;i++){
+for(let i=0;i<420;i++){
   stars.push({
     x:Math.random()*c.width,
     y:Math.random()*c.height,
@@ -66,7 +66,7 @@ for(let i=0;i<400;i++){
   });
 }
 
-// 💗 función matemática del corazón (solo visual)
+// 💗 Forma matemática del corazón (solo visual)
 function heart(t){
   return {
     x:16*Math.pow(Math.sin(t),3),
@@ -74,7 +74,7 @@ function heart(t){
   };
 }
 
-// 💞 partículas del corazón
+// 💞 Partículas
 let particles=[];
 function spawnHeart(cx,cy,scale){
   for(let t=0;t<Math.PI*2;t+=0.05){
@@ -88,22 +88,34 @@ function spawnHeart(cx,cy,scale){
   }
 }
 
-// crear corazones
+// Crear corazones
 function createHearts(){
   particles=[];
   let mx=c.width/2;
   let my=c.height/2;
   for(let i=-2;i<=2;i++){
-    spawnHeart(mx+i*160,my-140,8);
+    spawnHeart(mx+i*160,my-150,8);
   }
-  spawnHeart(mx,my+150,12);
+  spawnHeart(mx,my+160,12);
 }
 createHearts();
 
-// 💬 textos flotantes (solo los que pediste)
+// 💬 Textos flotantes (TU MENSAJE)
 const phrases=[
-  "Te quiero",
-  "Gracias por tu amistad"
+  "Te quiero mucho",
+  "Gracias por compartir",
+  "Cada día un poco de tu alegría",
+  "Gracias por sacarme una sonrisa",
+  "Gracias por habernos conocido",
+  "Y otras palabras más diría",
+  "Pero jejee",
+  "Algún día quizá jajaa",
+  "Espero te guste esto",
+  "Tardé toda la mañana tratando de hacer que quede bien",
+  "Algo menos para que salga",
+  "No salió como quería",
+  "Algo es algo",
+  "Y gracias por leer"
 ];
 
 function floatingText(){
@@ -115,12 +127,12 @@ function floatingText(){
   document.body.appendChild(d);
 
   let y=innerHeight;
-  let speed=Math.random()*0.6+0.3;
+  let speed=Math.random()*0.5+0.3;
 
   function move(){
     y-=speed;
     d.style.top=y+"px";
-    if(y<-40){
+    if(y<-60){
       d.remove();
     }else{
       requestAnimationFrame(move);
@@ -128,9 +140,9 @@ function floatingText(){
   }
   move();
 }
-setInterval(floatingText,700);
+setInterval(floatingText,800);
 
-// ✨ animación
+// ✨ Animación
 function animate(){
   ctx.clearRect(0,0,c.width,c.height);
 
@@ -154,7 +166,7 @@ function animate(){
 }
 animate();
 
-// 🎵 música al tocar
+// 🎵 Música al tocar
 document.body.addEventListener("click",()=>{
   document.getElementById("music").play();
 });
