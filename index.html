@@ -1,67 +1,57 @@
 <!DOCTYPE html>
 <html lang="es">
-<head> <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap" rel="stylesheet">
+<head>
 <meta charset="UTF-8">
 <title>De Jhonatan para Alison Michell</title>
-<style> #hint{
-  position:absolute;
-  bottom:20px;
-  width:100%;
-  text-align:center;
-  color:#aaa;
-  font-size:13px;
-  z-index:10;
-}
+
+<!-- FUENTES ELEGANTES -->
+<link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Dancing+Script&display=swap" rel="stylesheet">
+
+<style>
 html,body{
   margin:0;
   padding:0;
   background:black;
   overflow:hidden;
-  font-family: Arial, sans-serif;
 }
+
+/* CANVAS */
 canvas{
   position:fixed;
   top:0;
   left:0;
 }
+
+/* TEXTO PRINCIPAL */
 #mainText{
   position:absolute;
   top:42%;
   width:100%;
   transform:translateY(-50%);
   text-align:center;
-  color:#ff9ad5;
-  font-size:34px;
-  font-weight:bold;
-  text-shadow:0 0 10px pink, 0 0 25px hotpink;
+  font-family:'Great Vibes', cursive;
+  color:#ffd1ec;
+  font-size:44px;
+  letter-spacing:2px;
+  text-shadow:0 0 12px pink, 0 0 25px hotpink;
   z-index:10;
 }
+
+/* TEXTOS FLOTANTES */
 .floating{
   position:absolute;
-  color:#ffd9ef;
-  font-size:14px;
-  opacity:0.9;
+  font-family:'Dancing Script', cursive;
+  color:#ffe4f3;
+  font-size:16px;
+  opacity:0.95;
   pointer-events:none;
 }
-</style> #mainText{
-  font-family: 'Great Vibes', cursive;
-  font-size:42px;
-  letter-spacing:2px;
-}
+</style>
 </head>
+
 <body>
 
 <div id="mainText">De Jhonatan para Alison Michell</div>
-  <div id="hint">Toca la pantalla para escuchar música 🎵</div>
-  #hint{
-  position:absolute;
-  bottom:20px;
-  width:100%;
-  text-align:center;
-  color:#aaa;
-  font-size:13px;
-  z-index:10;
-}
 <canvas id="c"></canvas>
 
 <audio id="music" loop>
@@ -69,34 +59,34 @@ canvas{
 </audio>
 
 <script>
-const c = document.getElementById("c");
-const ctx = c.getContext("2d");
+const c=document.getElementById("c");
+const ctx=c.getContext("2d");
 function resize(){
-  c.width = innerWidth;
-  c.height = innerHeight;
+  c.width=innerWidth;
+  c.height=innerHeight;
 }
 resize();
-onresize = resize;
+onresize=resize;
 
-// ⭐ Galaxia
+/* GALAXIA */
 let stars=[];
-for(let i=0;i<420;i++){
+for(let i=0;i<450;i++){
   stars.push({
     x:Math.random()*c.width,
     y:Math.random()*c.height,
-    s:Math.random()*1.4+0.2
+    s:Math.random()*1.4+0.3
   });
 }
 
-// 💗 Forma matemática del corazón (solo visual)
+/* FORMA DEL CORAZÓN */
 function heart(t){
-  return {
+  return{
     x:16*Math.pow(Math.sin(t),3),
     y:-(13*Math.cos(t)-5*Math.cos(2*t)-2*Math.cos(3*t)-Math.cos(4*t))
   };
 }
 
-// 💞 Partículas
+/* PARTÍCULAS */
 let particles=[];
 function spawnHeart(cx,cy,scale){
   for(let t=0;t<Math.PI*2;t+=0.05){
@@ -110,7 +100,7 @@ function spawnHeart(cx,cy,scale){
   }
 }
 
-// Crear corazones
+/* CREAR CORAZONES */
 function createHearts(){
   particles=[];
   let mx=c.width/2;
@@ -122,7 +112,7 @@ function createHearts(){
 }
 createHearts();
 
-// 💬 Textos flotantes (TU MENSAJE)
+/* FRASES FLOTANTES */
 const phrases=[
   "Te quiero mucho",
   "Gracias por compartir",
@@ -162,13 +152,12 @@ function floatingText(){
   }
   move();
 }
-setInterval(floatingText,800);
+setInterval(floatingText,850);
 
-// ✨ Animación
+/* ANIMACIÓN */
 function animate(){
   ctx.clearRect(0,0,c.width,c.height);
 
-  // estrellas
   ctx.fillStyle="white";
   stars.forEach(s=>{
     ctx.fillRect(s.x,s.y,1,1);
@@ -176,7 +165,6 @@ function animate(){
     if(s.y>c.height) s.y=0;
   });
 
-  // corazones de partículas
   ctx.fillStyle="hotpink";
   particles.forEach(p=>{
     ctx.fillRect(p.x,p.y,2,2);
@@ -188,7 +176,7 @@ function animate(){
 }
 animate();
 
-// 🎵 Música al tocar
+/* MÚSICA */
 document.body.addEventListener("click",()=>{
   document.getElementById("music").play();
 });
