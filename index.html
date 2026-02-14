@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Jhonatan ❤️ Alisson Michell</title>
+<style>
+html, body {
+  margin: 0;
+  padding: 0;
+  background: black;
+  overflow: hidden;
+  height: 100%;
+  font-family: Arial, sans-serif;
+}
+canvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+}
+#texto {
+  position: absolute;
+  width: 100%;
+  text-align: center;
+  top: 45%;
+  color: hotpink;
+  font-size: 42px;
+  font-weight: bold;
+  text-shadow: 0 0 10px pink, 0 0 20px hotpink;
+}
+#hint {
+  position: absolute;
+  bottom: 20px;
+  width: 100%;
+  text-align: center;
+  color: #aaa;
+  font-size: 14px;
+}
+</style>
+</head>
+<body>
+
+<canvas id="c"></canvas>
+
+<div id="texto">
+  Jhonatan ❤️ Alisson Michell
+</div>
+
+<div id="hint">
+  Toca la pantalla para activar la música 🎵
+</div>
+
+<!-- Música romántica -->
+<audio id="music" loop>
+  <source src="https://cdn.pixabay.com/audio/2022/03/15/audio_6e6d7f3c3f.mp3" type="audio/mpeg">
+</audio>
+
+<script>
+const canvas = document.getElementById("c");
+const ctx = canvas.getContext("2d");
+canvas.width = innerWidth;
+canvas.height = innerHeight;
+
+let stars = [];
+let hearts = [];
+
+// ⭐ Galaxia (estrellas)
+for (let i = 0; i < 200; i++) {
+  stars.push({
+    x: Math.random() * canvas.width,
+    y: Math.random() * canvas.height,
+    r: Math.random() * 1.5,
+    s: Math.random() * 0.5 + 0.2
+  });
+}
+
+// 💗 Corazones flotando
+function createHeart() {
+  hearts.push({
+    x: Math.random() * canvas.width,
+    y: canvas.height + 20,
+    size: Math.random() * 15 + 10,
+    speed: Math.random() * 1.5 + 0.5,
+    alpha: 1
+  });
+}
+
+setInterval(createHeart, 300);
+
+function drawHeart(x, y, size, alpha) {
+  ctx.save();
+  ctx.globalAlpha = alpha;
+  ctx.fillStyle = "hotpink";
+  ctx.beginPath();
+  ctx.moveTo(x, y);
+  ctx.bezierCurveTo(x - size, y - size, x - size * 2, y + size / 2, x, y + size);
+  ctx.bezierCurveTo(x + size * 2, y + size / 2, x + size, y - size, x, y);
+  ctx.fill();
+  ctx.restore();
+}
+
+function animate() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+  // Dibujar estrellas
+  ctx.fillStyle = "white";
+  stars.forEach(s => {
+    ctx.beginPath();
+    ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+    ctx.fill();
+    s.y += s.s;
+    if (s.y > canvas.height) s.y = 0;
+  });
+
+  // Dibujar corazones
+  hearts.forEach((h, i) => {
+    drawHeart(h.x, h.y, h.size, h.alpha);
+    h.y -= h.speed;
+    h.alpha -= 0.003;
+    if (h.alpha <= 0) hearts.splice(i, 1);
+  });
+
+  requestAnimationFrame(animate);
+}
+
+animate();
+
+// 🎵 Activar música al tocar
+document.body.addEventListener("click", () => {
+  document.getElementById("music").play();
+  document.getElementById("hint").style.display = "none";
+});
+</script>
+
+</body>
+</html>
