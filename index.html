@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<title>Jhonatan ❤️ Alisson Michell</title>
+<title>Jhonatan y Alison</title>
 <style>
 html,body{
   margin:0;
@@ -16,19 +16,21 @@ canvas{
   top:0;
   left:0;
 }
-#topText{
+#names{
   position:absolute;
-  top:20px;
+  top:45%;
   width:100%;
+  transform:translateY(-50%);
   text-align:center;
-  color:#ff9ff3;
-  font-size:20px;
-  text-shadow:0 0 10px pink;
+  color:#ff8bd4;
+  font-size:36px;
+  font-weight:bold;
+  text-shadow:0 0 10px pink, 0 0 25px hotpink;
   z-index:10;
 }
 .floating{
   position:absolute;
-  color:#ff77ff;
+  color:#ffd6f0;
   font-size:14px;
   opacity:0.9;
   pointer-events:none;
@@ -37,7 +39,7 @@ canvas{
 </head>
 <body>
 
-<div id="topText">Te Amo Muchote 💖</div>
+<div id="names">Jhonatan y Alison</div>
 <canvas id="c"></canvas>
 
 <audio id="music" loop>
@@ -56,15 +58,15 @@ onresize = resize;
 
 // ⭐ galaxia
 let stars=[];
-for(let i=0;i<500;i++){
+for(let i=0;i<400;i++){
   stars.push({
     x:Math.random()*c.width,
     y:Math.random()*c.height,
-    s:Math.random()*1.5+0.3
+    s:Math.random()*1.4+0.2
   });
 }
 
-// 💗 función corazón
+// 💗 función matemática del corazón (solo visual)
 function heart(t){
   return {
     x:16*Math.pow(Math.sin(t),3),
@@ -72,7 +74,7 @@ function heart(t){
   };
 }
 
-// 💞 partículas corazones
+// 💞 partículas del corazón
 let particles=[];
 function spawnHeart(cx,cy,scale){
   for(let t=0;t<Math.PI*2;t+=0.05){
@@ -80,31 +82,28 @@ function spawnHeart(cx,cy,scale){
     particles.push({
       x:cx+p.x*scale,
       y:cy+p.y*scale,
-      vx:(Math.random()-0.5)*0.3,
-      vy:(Math.random()-0.5)*0.3
+      vx:(Math.random()-0.5)*0.35,
+      vy:(Math.random()-0.5)*0.35
     });
   }
 }
 
-// 💗 crear todos los corazones
+// crear corazones
 function createHearts(){
   particles=[];
   let mx=c.width/2;
   let my=c.height/2;
   for(let i=-2;i<=2;i++){
-    spawnHeart(mx+i*170,my-140,8);
+    spawnHeart(mx+i*160,my-140,8);
   }
-  spawnHeart(mx,my+140,13);
+  spawnHeart(mx,my+150,12);
 }
 createHearts();
 
-// 💬 textos flotantes (NOMBRES Y FRASES)
+// 💬 textos flotantes (solo los que pediste)
 const phrases=[
-  "Jhonatan ❤️ Alisson Michell",
-  "Mi vida 💕",
-  "Para siempre 💖",
-  "Te amo 💗",
-  "💞","💖","💗","👑"
+  "Te quiero",
+  "Gracias por tu amistad"
 ];
 
 function floatingText(){
@@ -116,12 +115,12 @@ function floatingText(){
   document.body.appendChild(d);
 
   let y=innerHeight;
-  let speed=Math.random()*0.5+0.3;
+  let speed=Math.random()*0.6+0.3;
 
   function move(){
     y-=speed;
     d.style.top=y+"px";
-    if(y<-50){
+    if(y<-40){
       d.remove();
     }else{
       requestAnimationFrame(move);
@@ -129,7 +128,7 @@ function floatingText(){
   }
   move();
 }
-setInterval(floatingText,500);
+setInterval(floatingText,700);
 
 // ✨ animación
 function animate(){
@@ -143,7 +142,7 @@ function animate(){
     if(s.y>c.height) s.y=0;
   });
 
-  // corazones
+  // corazones de partículas
   ctx.fillStyle="hotpink";
   particles.forEach(p=>{
     ctx.fillRect(p.x,p.y,2,2);
@@ -155,7 +154,7 @@ function animate(){
 }
 animate();
 
-// 🎵 música
+// 🎵 música al tocar
 document.body.addEventListener("click",()=>{
   document.getElementById("music").play();
 });
