@@ -4,54 +4,37 @@
 <meta charset="UTF-8">
 <title>Jhonatan ❤️ Alisson Michell</title>
 <style>
-html, body {
-  margin: 0;
-  padding: 0;
-  background: black;
-  overflow: hidden;
-  height: 100%;
+html,body{
+  margin:0;
+  padding:0;
+  background:black;
+  overflow:hidden;
   font-family: Arial, sans-serif;
 }
-canvas {
-  position: fixed;
-  top: 0;
-  left: 0;
+canvas{
+  position:fixed;
+  top:0;
+  left:0;
 }
-#texto {
-  position: absolute;
-  width: 100%;
-  text-align: center;
-  top: 45%;
-  color: hotpink;
-  font-size: 42px;
-  font-weight: bold;
-  text-shadow: 0 0 10px pink, 0 0 20px hotpink;
-}
-#hint {
-  position: absolute;
-  bottom: 20px;
-  width: 100%;
-  text-align: center;
-  color: #aaa;
-  font-size: 14px;
+#title{
+  position:absolute;
+  top:40px;
+  width:100%;
+  text-align:center;
+  color:#ffb6ff;
+  font-size:22px;
+  letter-spacing:2px;
+  text-shadow:0 0 10px pink;
 }
 </style>
 </head>
 <body>
 
+<div id="title">Te Amo Muchote 💖</div>
 <canvas id="c"></canvas>
 
-<div id="texto">
-  Jhonatan ❤️ Alisson Michell
-</div>
-
-<div id="hint">
-  Toca la pantalla para activar la música 🎵
-</div>
-
-<!-- Música romántica -->
 <audio id="music" loop>
-  <source src="https://cdn.pixabay.com/audio/2022/03/15/audio_6e6d7f3c3f.mp3" type="audio/mpeg">
+<source src="https://cdn.pixabay.com/audio/2022/03/09/audio_1e6d6a2f98.mp3">
 </audio>
 
 <script>
@@ -60,77 +43,83 @@ const ctx = canvas.getContext("2d");
 canvas.width = innerWidth;
 canvas.height = innerHeight;
 
-let stars = [];
-let hearts = [];
+window.onresize = ()=>{
+  canvas.width = innerWidth;
+  canvas.height = innerHeight;
+};
 
-// ⭐ Galaxia (estrellas)
-for (let i = 0; i < 200; i++) {
+let stars=[];
+let particles=[];
+
+// ⭐ estrellas
+for(let i=0;i<400;i++){
   stars.push({
-    x: Math.random() * canvas.width,
-    y: Math.random() * canvas.height,
-    r: Math.random() * 1.5,
-    s: Math.random() * 0.5 + 0.2
+    x:Math.random()*canvas.width,
+    y:Math.random()*canvas.height,
+    s:Math.random()*1.5+0.3
   });
 }
 
-// 💗 Corazones flotando
-function createHeart() {
-  hearts.push({
-    x: Math.random() * canvas.width,
-    y: canvas.height + 20,
-    size: Math.random() * 15 + 10,
-    speed: Math.random() * 1.5 + 0.5,
-    alpha: 1
-  });
+// 💗 función corazón
+function heart(t){
+  return {
+    x:16*Math.pow(Math.sin(t),3),
+    y:-(13*Math.cos(t)-5*Math.cos(2*t)-2*Math.cos(3*t)-Math.cos(4*t))
+  };
 }
 
-setInterval(createHeart, 300);
-
-function drawHeart(x, y, size, alpha) {
-  ctx.save();
-  ctx.globalAlpha = alpha;
-  ctx.fillStyle = "hotpink";
-  ctx.beginPath();
-  ctx.moveTo(x, y);
-  ctx.bezierCurveTo(x - size, y - size, x - size * 2, y + size / 2, x, y + size);
-  ctx.bezierCurveTo(x + size * 2, y + size / 2, x + size, y - size, x, y);
-  ctx.fill();
-  ctx.restore();
+// 💞 crear corazones grandes
+function createHeart(cx,cy,scale){
+  for(let t=0;t<Math.PI*2;t+=0.08){
+    let p=heart(t);
+    particles.push({
+      x:cx+p.x*scale,
+      y:cy+p.y*scale,
+      vx:(Math.random()-0.5)*0.3,
+      vy:(Math.random()-0.5)*0.3,
+      a:1
+    });
+  }
 }
 
-function animate() {
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
+// 💗 fila de corazones
+let yBase = canvas.height/2;
+for(let i=-2;i<=2;i++){
+  createHeart(canvas.width/2 + i*180, yBase-120, 10);
+}
+createHeart(canvas.width/2, yBase+120, 16);
 
-  // Dibujar estrellas
-  ctx.fillStyle = "white";
-  stars.forEach(s => {
-    ctx.beginPath();
-    ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
-    ctx.fill();
-    s.y += s.s;
-    if (s.y > canvas.height) s.y = 0;
+// ✨ animación
+function animate(){
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+
+  // estrellas
+  ctx.fillStyle="white";
+  stars.forEach(s=>{
+    ctx.fillRect(s.x,s.y,1,1);
+    s.y+=s.s*0.15;
+    if(s.y>canvas.height) s.y=0;
   });
 
-  // Dibujar corazones
-  hearts.forEach((h, i) => {
-    drawHeart(h.x, h.y, h.size, h.alpha);
-    h.y -= h.speed;
-    h.alpha -= 0.003;
-    if (h.alpha <= 0) hearts.splice(i, 1);
+  // partículas corazón
+  ctx.fillStyle="hotpink";
+  particles.forEach(p=>{
+    ctx.globalAlpha=p.a;
+    ctx.fillRect(p.x,p.y,2,2);
+    p.x+=p.vx;
+    p.y+=p.vy;
   });
 
+  ctx.globalAlpha=1;
   requestAnimationFrame(animate);
 }
-
 animate();
 
-// 🎵 Activar música al tocar
-document.body.addEventListener("click", () => {
+// 🎵 música al tocar
+document.body.addEventListener("click",()=>{
   document.getElementById("music").play();
-  document.getElementById("hint").style.display = "none";
 });
 </script>
 
 </body>
 </html>
-
